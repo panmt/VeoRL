@@ -1,0 +1,577 @@
+wooden_pickaxe:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 0
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all: {}
+  terminal_specs:
+    max_steps: 10000
+  techtree_specs:
+    guide_path: data/codex_techtree.json
+    target_item: wooden_pickaxe
+    tasks:
+      log: results/test_2024-03-06_22-32-01/checkpoints/timestep_400000.zip
+      # log: results/train_subtask_log_300k/checkpoints/timestep_250000.zip
+      # stone: results/test_2023-12-12_22-56-03/checkpoints/timestep_600000.zip
+
+log:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 0
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all: {}
+  terminal_specs:
+    max_steps: 10000
+  techtree_specs:
+    guide_path: data/codex_techtree.json
+    target_item: log
+    tasks:
+      log: results/test_2024-03-06_22-32-01/checkpoints/timestep_400000.zip
+      # log: results/train_subtask_log_300k/checkpoints/timestep_250000.zip
+      # stone: results/test_2023-12-12_22-56-03/checkpoints/timestep_600000.zip
+
+
+stone_pickaxe_without_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 0
+  initial_inventory:
+    0:
+      name: "wooden_pickaxe"
+    1:
+      name: "log"
+      quantity: 10
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all: {}
+  terminal_specs:
+    max_steps: 20000
+  techtree_specs:
+    guide_path: data/codex_techtree.json
+    target_item: stone_pickaxe
+    tasks:
+      # log: results/test_2023-12-11_14-47-57/task0_log.zip
+      log: results/test_2024-03-06_22-32-01/checkpoints/timestep_400000.zip
+      # cobblestone: results/test_2023-12-13_22-36-59/checkpoints/timestep_400000.zip # trained with loading
+      cobblestone: results/test_2024-03-02_09-17-52/checkpoints/timestep_2000000.zip # trained without loading
+
+stone_pickaxe_with_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 0
+  initial_inventory:
+    0:
+      name: "wooden_pickaxe"
+    1:
+      name: "log"
+      quantity: 10
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all: {}
+  terminal_specs:
+    max_steps: 20000
+  techtree_specs:
+    guide_path: data/codex_techtree.json
+    target_item: stone_pickaxe
+    tasks:
+      # log: results/test_2023-12-11_14-47-57/task0_log.zip
+      log: results/test_2024-03-06_22-32-01/checkpoints/timestep_400000.zip
+      # cobblestone: results/test_2023-12-13_22-36-59/checkpoints/timestep_400000.zip # trained with loading
+      cobblestone: results/test_2024-03-02_09-55-58/checkpoints/timestep_2000000.zip # trained without loading
+
+
+cobblestone_without_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 0
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all: {}
+  terminal_specs:
+    max_steps: 20000
+  techtree_specs:
+    guide_path: data/codex_techtree.json
+    target_item: cobblestone
+    tasks:
+      # log: results/test_2023-12-11_14-47-57/task0_log.zip
+      log: results/test_2024-03-06_22-32-01/checkpoints/timestep_400000.zip
+      # cobblestone: results/test_2023-12-13_22-36-59/checkpoints/timestep_400000.zip # trained with loading
+      cobblestone: results/test_2024-03-02_09-17-52/checkpoints/timestep_2000000.zip # trained without loading
+
+cobblestone_with_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 0
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all: {}
+  terminal_specs:
+    max_steps: 20000
+  techtree_specs:
+    guide_path: data/codex_techtree.json
+    target_item: cobblestone
+    tasks:
+      # log: results/test_2023-12-11_14-47-57/task0_log.zip
+      log: results/test_2024-03-06_22-32-01/checkpoints/timestep_400000.zip
+      # cobblestone: results/test_2023-12-13_22-36-59/checkpoints/timestep_400000.zip # trained with loading
+      cobblestone: results/test_2024-03-02_09-55-58/checkpoints/timestep_2000000.zip # trained without loading
+
+
+base_task:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_beef_without_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "stone_sword"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  mobs_specs:
+    mobs: "cow"
+    rel_positions: [5, 0, 0]
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_beef_with_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "stone_sword"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  mobs_specs:
+    mobs: "cow"
+    rel_positions: [5, 0, 0]
+  bertscore_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_sand_without_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_shovel"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+
+base_task_sand_with_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_shovel"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  bertscore_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+
+base_task_cobblestone_with_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  bertscore_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_cobblestone_without_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+
+base_task_iron_ore_without_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "stone_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 5000
+
+base_task_iron_ore_with_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "stone_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  bertscore_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 5000
+
+
+
+base_task_log_baseline:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  clip_specs:
+    prompts: []
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_log_concentration:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    fusion: False
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_log_concentration_fusion:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    fusion: True
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_cobblestone_concentration:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    gaussian: True
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_cobblestone_concentration_zoom_in:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    gaussian: True
+    fusion: False
+    zoom_in: True
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_cobblestone_zoom_in:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    gaussian: False
+    fusion: False
+    zoom_in: True
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_cobblestone_concentration_bertscore:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  bertscore_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    fusion: False
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_cobblestone_concentration_fusion:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 10
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    gaussian: True
+    fusion: True
+    zoom_in: False
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+base_task_wool:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "shears"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  mobs_specs:
+    mobs: "sheep"
+    rel_positions: [10, 0, 0]
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000

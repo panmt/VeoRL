@@ -1,0 +1,1497 @@
+dv2_testdemo_01:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "wool"
+    target_quantities: 1
+    initial_mobs: "sheep"
+    initial_mob_spawn_range_low: [2, 1, 2]
+    initial_mob_spawn_range_high: [7, 1, 7]
+    start_at_night: false
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "shears" 
+        quantity: 1
+  clip_specs:
+    prompts: ["kill a sheep"]
+  concentration_specs:
+    prompts: ["kill a sheep"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 200
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+
+dv2_harvest_log_in_plains:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Cut a tree"]
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: True
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000 
+
+dv2_mine_cobblestone:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  concentration_specs:
+    prompts: ["Obtain cobblestone"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: True
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+dv2_mine_iron_ore:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "iron_ore"
+    target_quantities: 1
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "stone_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain iron ore"]
+  concentration_specs:
+    prompts: ["Obtain iron ore"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      iron_ore:
+        reward: 1
+  success_specs:
+    terminal: True
+    reward: 0
+    all:
+      item:
+        type: 'iron_ore'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+
+dv2_harvest_water_bucket_in_plains:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "bucket"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain water"]
+  concentration_specs:
+    prompts: ["Obtain water"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: true
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+
+dv2_harvest_sand:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "sand"
+    target_quantities: 1
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Obtain sand"]
+  concentration_specs:
+    prompts: ["Obtain sand"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      sand:
+        reward: 1
+  success_specs:
+    terminal: True
+    reward: 0
+    all:
+      item:
+        type: 'sand'
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+    
+dv2_combat_spider:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 1
+  sim_specs:
+    target_names: "spider"
+    target_quantities: 1
+    initial_mobs: "spider"
+    initial_mob_spawn_range_low: [-7, 1, -7]
+    initial_mob_spawn_range_high: [7, 1, 7]
+    start_at_night: true
+    always_night: true
+    specified_biome: "plains"
+    allow_mob_spawn: false
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "diamond_sword" 
+        quantity: 1
+  clip_specs:
+    prompts: ["Combat a spider in night plains"]
+  concentration_specs:
+    prompts: ["Combat a spider in night plains"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      string:
+        reward: 1
+      spider_eye:
+        reward: 1
+  success_specs:
+    terminal: true
+    reward: 3
+    all:
+      item:
+        type: 'string'
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+
+dv2_shear_sheep_in_plains:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 1
+  sim_specs:
+    target_names: "wool"
+    target_quantities: 1
+    initial_mobs: "sheep"
+    initial_mob_spawn_range_low: [-7, 1, -7]
+    initial_mob_spawn_range_high: [7, 1, 7]
+    start_at_night: false
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "shears" 
+        quantity: 1
+  clip_specs:
+    prompts: ["shear a sheep"]
+  concentration_specs:
+    prompts: ["shear a sheep"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      wool:
+        reward: 1
+  success_specs:
+    terminal: true
+    reward: 3
+    all:
+      item:
+        type: 'wool'
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+
+
+######## DV3 + MineCLIP ########
+no_zoom_in_harvest_log_in_plains:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Cut a tree"]
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+no_zoom_in_harvest_water_bucket_in_plains:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "bucket"
+        quantity: 1
+  clip_specs:
+    prompts: ["Find water, obtain water bucket"]
+  concentration_specs:
+    prompts: ["Find water, obtain water bucket"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+no_zoom_in_mine_cobblestone:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  concentration_specs:
+    prompts: ["Obtain cobblestone"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+no_zoom_in_mine_iron_ore:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "iron_ore"
+    target_quantities: 1
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "stone_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain iron ore"]
+  concentration_specs:
+    prompts: ["Obtain iron ore"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      iron_ore:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'iron_ore'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+no_zoom_in_combat_spider:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "spider"
+    target_quantities: 1
+    initial_mobs: "spider"
+    initial_mob_spawn_range_low: [-7, 1, -7]
+    initial_mob_spawn_range_high: [7, 1, 7]
+    start_at_night: true
+    always_night: true
+    specified_biome: "plains"
+    allow_mob_spawn: false
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "diamond_sword" 
+        quantity: 1
+  clip_specs:
+    prompts: ["Combat a spider in night plains"]
+  concentration_specs:
+    prompts: ["Combat a spider in night plains"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      string:
+        reward: 1
+      spider_eye:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'string'
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+
+
+############################################################
+
+harvest_log_in_plains_zoom_in:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+harvest_log_in_plains_zoom_in_mineclip:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Cut a tree"]
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: False
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+# =====================================================#
+# ================= Pretrain-finetune =================#
+# =====================================================#
+harvest_log_in_plains_pretrain_a:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Cut a tree"]
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: True
+    fusion: False
+    zoom_in: False
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+harvest_water_bucket_in_plains_finetune:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "plains"
+    initial_inventory:
+      mainhand:
+        name: "bucket"
+        quantity: 1
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+
+# =====================================================#
+# ========= Generate data for U-Net training ==========#
+# =====================================================#
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_01 --num_envs 0 --steps 1600
+U-Net_01:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+  clip_specs:
+    prompts: ["Cut a tree"]
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 200
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_02 --num_envs 0 --steps 1600
+U-Net_02:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+  clip_specs:
+    prompts: ["Cut a tree"]
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 200
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_03 --num_envs 0 --steps 1000
+U-Net_03:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "plains"
+  clip_specs:
+    prompts: ["Find water", "Obtain water bucket"]
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 100
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_04 --num_envs 0 --steps 400
+U-Net_04:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+  clip_specs:
+    prompts: ["Find water", "Obtain water bucket"]
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 100
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_05 --num_envs 0 --steps 600
+U-Net_05:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "river"
+  clip_specs:
+    prompts: ["Find water", "Obtain water bucket"]
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 100
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_06 --num_envs 0 --steps 600
+U-Net_06:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 60
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_07 --num_envs 0 --steps 600
+U-Net_07:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+    specified_biome: "stone_beach"
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 60
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_10 --num_envs 0 --steps 2000
+U-Net_10:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "spider"
+    target_quantities: 1
+    initial_mobs: "spider"
+    initial_mob_spawn_range_low: [-1, 0, 0]
+    initial_mob_spawn_range_high: [1, 0, 7]
+    start_at_night: true
+    always_night: true
+    specified_biome: "plains"
+    allow_mob_spawn: false
+  clip_specs:
+    prompts: ["Combat a spider in night plains"]
+  reward_specs:
+    item_rewards: 
+      string:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'string'
+        quantity: 1
+  terminal_specs:
+    max_steps: 50
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_11 --num_envs 0 --steps 600
+U-Net_11:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "sheep"
+    target_quantities: 1
+    initial_mobs: "sheep"
+    initial_mob_spawn_range_low: [-2, 1, 1]
+    initial_mob_spawn_range_high: [2, 1, 7]
+    specified_biome: "plains"
+    start_at_night: false
+    always_night: false
+  clip_specs:
+    prompts: ["Kill a sheep"]
+  reward_specs:
+    item_rewards: 
+      wool:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'wool'
+        quantity: 1
+  terminal_specs:
+    max_steps: 60
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_12 --num_envs 0 --steps 600
+U-Net_12:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "sheep"
+    target_quantities: 1
+    initial_mobs: "sheep"
+    initial_mob_spawn_range_low: [-5, 0, 7]
+    initial_mob_spawn_range_high: [5, 0, 15]
+    specified_biome: "plains"
+    start_at_night: false
+    always_night: false
+  clip_specs:
+    prompts: ["Kill a sheep"]
+  reward_specs:
+    item_rewards: 
+      wool:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'wool'
+        quantity: 1
+  terminal_specs:
+    max_steps: 60
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_13 --num_envs 0 --steps 600
+U-Net_13:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "cow"
+    target_quantities: 1
+    initial_mobs: "cow"
+    initial_mob_spawn_range_low: [-2, 1, 1]
+    initial_mob_spawn_range_high: [2, 1, 7]
+    specified_biome: "plains"
+    start_at_night: false
+    always_night: false
+  clip_specs:
+    prompts: ["Kill a cow"]
+  reward_specs:
+    item_rewards: 
+      beef:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'beef'
+        quantity: 1
+  terminal_specs:
+    max_steps: 60
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_14 --num_envs 0 --steps 600
+U-Net_14:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "cow"
+    target_quantities: 1
+    initial_mobs: "cow"
+    initial_mob_spawn_range_low: [-5, 0, 7]
+    initial_mob_spawn_range_high: [5, 0, 15]
+    specified_biome: "plains"
+    start_at_night: false
+    always_night: false
+  clip_specs:
+    prompts: ["Kill a cow"]
+  reward_specs:
+    item_rewards: 
+      beef:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'beef'
+        quantity: 1
+  terminal_specs:
+    max_steps: 60
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_15 --num_envs 0 --steps 800
+U-Net_15:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "sand"
+    target_quantities: 1
+    specified_biome: "plains"
+  clip_specs:
+    prompts: ["Obtain sand"]
+  reward_specs:
+    item_rewards: 
+      sand:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'sand'
+        quantity: 1
+  terminal_specs:
+    max_steps: 80
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_16 --num_envs 0 --steps 400
+U-Net_16:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "sand"
+    target_quantities: 1
+    specified_biome: "river"
+  clip_specs:
+    prompts: ["Obtain sand"]
+  reward_specs:
+    item_rewards: 
+      sand:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'sand'
+        quantity: 1
+  terminal_specs:
+    max_steps: 80
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+
+# MINEDOJO_HEADLESS=1 python subtask.py --config U-Net_17 --num_envs 0 --steps 400
+U-Net_17:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 0
+  sim_specs:
+    target_names: "sand"
+    target_quantities: 1
+    specified_biome: "beach"
+  clip_specs:
+    prompts: ["Obtain sand"]
+  reward_specs:
+    item_rewards: 
+      sand:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'sand'
+        quantity: 1
+  terminal_specs:
+    max_steps: 80
+  screenshot_specs:
+    reset_flag: True
+    step_flag: True
+    save_freq: 2
+
+
+# =====================================================#
+# =============== Harvest log in plains ===============#
+# =====================================================#
+
+# MineCLIP
+harvest_log_in_plains_A:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Cut a tree"]
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+# MineCLIP + gaussian
+harvest_log_in_plains_AB:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+    break_speed_multiplier: 100
+  clip_specs:
+    prompts: ["Cut a tree"]
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: True
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+      log2:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    any:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+# MineCLIP + zoom_in
+harvest_log_in_plains_AC:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "log"
+    target_quantities: 1
+    specified_biome: "plains"
+  clip_specs:
+    prompts: ["Cut a tree"]
+  concentration_specs:
+    prompts: ["Cut a tree"]
+    gaussian: False
+    fusion: False
+    zoom_in: True
+  reward_specs:
+    item_rewards: 
+      log:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'log'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+# =====================================================#
+# ========== Harvest water bucket in plains ===========#
+# =====================================================#
+
+harvest_water_bucket_in_plains:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "plains"
+    initial_inventory:
+      mainhand:
+        name: "bucket"
+        quantity: 1
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+# MineCLIP
+harvest_water_bucket_in_plains_A:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "water_bucket"
+    target_quantities: 1
+    specified_biome: "plains"
+    initial_inventory:
+      mainhand:
+        name: "bucket"
+        quantity: 1
+  clip_specs:
+    prompts: ["Find water", "Obtain water bucket"]
+  reward_specs:
+    item_rewards: 
+      water_bucket:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'water_bucket'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+# =====================================================#
+# ================= Mine cobblestone ==================#
+# =====================================================#
+
+# MineCLIP
+mine_cobblestone_A:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+# MineCLIP + gaussian
+mine_cobblestone_AB:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+    break_speed_multiplier: 100
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  concentration_specs:
+    prompts: ["Obtain cobblestone"]
+    gaussian: True
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+  screenshot_specs:
+    reset_flag: True
+    step_flag: False
+
+# MineCLIP + zoom_in
+mine_cobblestone_AC:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "cobblestone"
+    target_quantities: 1
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain cobblestone"]
+  concentration_specs:
+    prompts: ["Obtain cobblestone"]
+    gaussian: False
+    fusion: False
+    zoom_in: True
+  reward_specs:
+    item_rewards: 
+      cobblestone:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'cobblestone'
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+# =====================================================#
+# =================== Mine iron ore ===================#
+# =====================================================#
+
+# MineCLIP
+mine_iron_ore_A:
+  task_id: "harvest"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "iron_ore"
+    target_quantities: 1
+    initial_inventory:
+      mainhand:
+        name: "stone_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: ["Obtain iron ore"]
+  reward_specs:
+    item_rewards: 
+      iron_ore:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'iron_ore'
+        quantity: 1
+  terminal_specs:
+    max_steps: 2000
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+# =====================================================#
+# =================== Combat spider ===================#
+# =====================================================#
+
+# MineCLIP
+combat_spider_A:
+  task_id: "combat"
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    target_names: "spider"
+    target_quantities: 1
+    initial_mobs: "spider"
+    initial_mob_spawn_range_low: [-7, 1, -7]
+    initial_mob_spawn_range_high: [7, 1, 7]
+    start_at_night: true
+    always_night: true
+    specified_biome: "plains"
+    allow_mob_spawn: false
+    initial_inventory:
+      mainhand:
+        name: "diamond_sword" 
+        quantity: 1
+  clip_specs:
+    prompts: ["Combat a spider in night plains"]
+  reward_specs:
+    item_rewards: 
+      string:
+        reward: 1
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        type: 'string'
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+  screenshot_specs:
+    reset_flag: False
+    step_flag: False
+
+
+
+base_task_cobblestone_concentration_500:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    gaussian: True
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 500
+  screenshot_specs:
+    reset_flag: True
+    step_flag: False
+
+base_task_cobblestone_concentration_1000:
+  task_id: creative
+  sim: minedojo
+  fast_reset: 5
+  sim_specs:
+    initial_inventory:
+      mainhand:
+        name: "wooden_pickaxe"
+        quantity: 1
+  clip_specs:
+    prompts: []
+  concentration_specs:
+    prompts: []
+    gaussian: True
+    fusion: False
+    zoom_in: False
+  reward_specs:
+    item_rewards: {}
+  success_specs:
+    terminal: false
+    reward: 0
+    all:
+      item:
+        quantity: 1
+  terminal_specs:
+    max_steps: 1000
+  screenshot_specs:
+    reset_flag: True
+    step_flag: False
