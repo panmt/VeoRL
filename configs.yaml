@@ -3,22 +3,25 @@ defaults:
   logdir: null
   traindir: null
   evaldir: null
-  offline_traindir: ''
-  offline_evaldir: ''
+  target_dataset_logdir: '\path to offline dataset'
+  source_video_logdir: '\path to video dataset'
   seed: 0
   steps: 1e7
   eval_every: 1e4
-  log_every: 1e4
+  log_every: 1000
+  step_train_all: 13e4 
+  step_train_ban: 4e4  
+  step_train_wm: 8e4 
   reset_every: 0
-  #gpu_growth: True
   device: 'cuda:0'
   precision: 16
   debug: False
   expl_gifs: False
   camera: corner
-  num_tasks: 1
-  eval_num: 1
-  is_adaptive: True
+  eval_num: 10
+
+  domain_name: 'carla'
+  image_size: 64
 
   # Environment
   task: 'dmc_walker_walk'
@@ -67,17 +70,12 @@ defaults:
   weight_decay: 0.0
 
   # Training
-  num_futher_step: 10
-  patience: 10
   num_latent_action: 50
   latent_action_dim: 8
-  mini_batch_size: 10
   batch_size: 50
   batch_length: 50
-  batch_length_large: 200
+  batch_length_large: 50
   batch_length_source: 25
-  # batch_size: 5
-  # batch_length: 500
   train_every: 5
   train_steps: 1
   pretrain: 100
@@ -132,183 +130,75 @@ defaults:
   disag_units: 400
   disag_action_cond: False
 
-
-dmlab:
-
-  # General
-  task: 'dmlab_rooms_watermaze'
-  steps: 2e8
-  eval_every: 1e5
-  log_every: 1e4
-  prefill: 50000
-  dataset_size: 2e6
-  pretrain: 0
-
-  # Environment
-  time_limit: 108000  # 30 minutes of game play.
-  #grayscale: True
-  action_repeat: 4
-  eval_noise: 0.0
-  train_every: 16
-  train_steps: 1
-  clip_rewards: 'tanh'
-
-  # Model
-  grad_heads: ['image', 'reward', 'discount']
-  dyn_cell: 'gru_layer_norm'
-  pred_discount: True
-  cnn_depth: 48
-  dyn_deter: 600
-  dyn_hidden: 600
-  dyn_stoch: 32
-  dyn_discrete: 32
-  reward_layers: 4
-  discount_layers: 4
-  value_layers: 4
-  actor_layers: 4
-
-  # Behavior
-  actor_dist: 'onehot'
-  actor_entropy: 'linear(3e-3,3e-4,2.5e6)'
-  expl_amount: 0.0
-  discount: 0.999
-  imag_gradient: 'both'
-  imag_gradient_mix: 'linear(0.1,0,2.5e6)'
-
-  # Training
-  discount_scale: 5.0
-  reward_scale: 1
-  weight_decay: 1e-6
-  model_lr: 2e-4
-  kl_scale: 0.1
-  kl_free: 0.0
-  actor_lr: 4e-5
-  value_lr: 1e-4
-  oversample_ends: True
-
-
-atari:
-
-  # General
-  task: 'atari_pong'
-  steps: 2e8
-  eval_every: 1e5
-  log_every: 1e4
-  prefill: 50000
-  dataset_size: 2e6
-  pretrain: 0
-
-  # Environment
-  time_limit: 108000  # 30 minutes of game play.
-  grayscale: True
-  action_repeat: 4
-  eval_noise: 0.0
-  train_every: 16
-  train_steps: 1
-  clip_rewards: 'tanh'
-
-  # Model
-  grad_heads: ['image', 'reward', 'discount']
-  dyn_cell: 'gru_layer_norm'
-  pred_discount: True
-  cnn_depth: 48
-  dyn_deter: 600
-  dyn_hidden: 600
-  dyn_stoch: 32
-  dyn_discrete: 32
-  reward_layers: 4
-  discount_layers: 4
-  value_layers: 4
-  actor_layers: 4
-
-  # Behavior
-  actor_dist: 'onehot'
-  actor_entropy: 'linear(3e-3,3e-4,2.5e6)'
-  expl_amount: 0.0
-  discount: 0.999
-  imag_gradient: 'both'
-  imag_gradient_mix: 'linear(0.1,0,2.5e6)'
-
-  # Training
-  discount_scale: 5.0
-  reward_scale: 1
-  weight_decay: 1e-6
-  model_lr: 2e-4
-  kl_scale: 0.1
-  kl_free: 0.0
-  actor_lr: 4e-5
-  value_lr: 1e-4
-  oversample_ends: True
-
-dmc:
-
-  # General
-  task: 'dmc_walker_walk'
-  steps: 5e5
-  eval_every: 5e3
-  log_every: 5e3
-  prefill: 2500
-  dataset_size: 0
-  pretrain: 100
-  num_teachers: 4
-  eval_num: 1
-
-  # Environment
-  time_limit: 1000
-  action_repeat: 2
-  train_every: 5
-  train_steps: 1
-
-  # Model
-  grad_heads: ['image', 'reward']
-  dyn_cell: 'gru_layer_norm'
-  pred_discount: False
-  cnn_depth: 32
-  dyn_deter: 200
-  dyn_stoch: 50
-  dyn_discrete: 0
-  reward_layers: 2
-  discount_layers: 3
-  value_layers: 3
-  actor_layers: 4
-
-  # Behavior
-  actor_dist: 'trunc_normal'
-  expl_amount: 0.0
-  actor_entropy: '1e-4'
-  discount: 0.99
-  imag_gradient: 'dynamics'
-  imag_gradient_mix: 1.0
-
-  # Training
-  reward_scale: 2
-  weight_decay: 0.0
-  model_lr: 3e-4
-  vae_lr: 8e-4
-  value_lr: 8e-5
-  actor_lr: 8e-5
-  opt_eps: 1e-5
-  kl_free: '1.0'
-  kl_scale: '1.0'
-
-
 metaworld:
-
   task: metaworld_door_lock
-
-    # General
+  # General
   steps: 3e6
-  eval_every: 3e3
-  log_every: 3e3
+  step_train_all: 13e4 
+  step_train_ban: 4e4  
+  step_train_wm: 8e4 
+  eval_every: 3000
+  log_every: 3000
   prefill: 3000
   dataset_size: 0
   pretrain: 100
-  num_teachers: 6
   eval_num: 10
 
   # Environment
   time_limit: 500
   action_repeat: 1
+  train_every: 5
+  train_steps: 1
+
+  # Model
+  grad_heads: ['image', 'reward']
+  dyn_cell: 'gru_layer_norm'
+  pred_discount: False
+  cnn_depth: 32
+  dyn_deter: 200
+  dyn_stoch: 50
+  dyn_discrete: 0
+  reward_layers: 2
+  discount_layers: 3
+  value_layers: 3
+  actor_layers: 4
+
+  # Behavior
+  actor_dist: 'trunc_normal'
+  expl_amount: 0.0
+  actor_entropy: '1e-4'
+  discount: 0.99
+  imag_gradient: 'dynamics'
+  imag_gradient_mix: 1.0
+
+  # Training
+  batch_length_large: 200
+  reward_scale: 2
+  weight_decay: 0.0
+  model_lr: 3e-4
+  value_lr: 8e-5
+  actor_lr: 8e-5
+  opt_eps: 1e-5
+  kl_free: '1.0'
+  kl_scale: '1.0'
+
+carla:
+  task: carla_0
+  # General
+  steps: 3e6
+  step_train_all: 13e4 
+  step_train_ban: 4e4  
+  step_train_wm: 8e4 
+  eval_every: 3000
+  log_every: 3000
+  prefill: 3000
+  dataset_size: 0
+  pretrain: 100
+  eval_num: 10
+
+  # Environment
+  time_limit: 1000
+  action_repeat: 4
   train_every: 5
   train_steps: 1
 
@@ -343,56 +233,67 @@ metaworld:
   kl_free: '1.0'
   kl_scale: '1.0'
 
-kitchen:
-
-  task: kitchen_0
-
-    # General
-  steps: 3e5
-  eval_every: 6e3
-  log_every: 6e3
+minedojo:
+  # General
+  task: 'minedojo_dv2_testdemo_01'
+  zoom_in: False
+  gaussian_reward: False
+  name: "test"
+  steps: 1e6
+  step_train_all: 12e4 
+  step_train_ban: 3e4  
+  step_train_wm: 7e4 
+  eval_every: 1e4
+  log_every: 2000
+  eval_num: 10
   prefill: 2500
   dataset_size: 0
   pretrain: 100
-  num_teachers: 5
-  eval_num: 10
 
   # Environment
-  time_limit: 500
+  envs: 1
   action_repeat: 1
-  train_every: 5
+  eval_noise: 0.0
+  train_every: 16
   train_steps: 1
+  clip_rewards: 'tanh'
 
   # Model
   grad_heads: ['image', 'reward']
   dyn_cell: 'gru_layer_norm'
   pred_discount: False
-  cnn_depth: 32
-  dyn_deter: 200
-  dyn_stoch: 50
-  dyn_discrete: 0
-  reward_layers: 2
-  discount_layers: 3
-  value_layers: 3
-  actor_layers: 4
+  cnn_depth: 96
+  dyn_deter: 4096
+  dyn_hidden: 1024
+  dyn_stoch: 32
+  dyn_discrete: 32
+  reward_layers: 5
+  discount_layers: 5
+  value_layers: 5
+  actor_layers: 5
 
   # Behavior
-  actor_dist: 'trunc_normal'
+  actor_dist: 'onehot'
+  actor_entropy: '3e-4'
   expl_amount: 0.0
-  actor_entropy: '1e-4'
-  discount: 0.99
-  imag_gradient: 'dynamics'
-  imag_gradient_mix: 1.0
+  discount: 0.997
+  imag_gradient: 'reinforce'
+  imag_gradient_mix: 0.0
 
   # Training
-  reward_scale: 2
+  batch_size: 16
+  batch_length: 32 
+  batch_length_large: 32
+  discount_scale: 5.0
+  reward_scale: 1
   weight_decay: 0.0
-  model_lr: 3e-4
-  value_lr: 8e-5
-  actor_lr: 8e-5
-  opt_eps: 1e-5
-  kl_free: '1.0'
-  kl_scale: '1.0'
+  model_lr: 1e-4
+  value_lr: 3e-5
+  actor_lr: 3e-5
+  opt_eps: 1e-8
+  kl_free: 1.0
+  kl_scale: 0.1
+  oversample_ends: True
 
 debug:
 

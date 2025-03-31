@@ -487,41 +487,20 @@ class GRUCell(nn.Module):
 
 
 class LatentActionGen(nn.Module):
+    
     def __init__(self, num_embeddings=30, in_channel=4096, embedding_channel=4):
         super(LatentActionGen, self).__init__()
-        # self._input_size = vq_in_channel * 36
         self.quantizer = VectorQuantizer1D(num_embeddings, embedding_channel, 1.0)
-
         self.fc_0 = nn.Linear(in_channel, 128)
         self.fc_1 = nn.Linear(in_channel, 128)
-        # self.fc_action = nn.Linear(4, 16)
-        # self.conv_a = conv3x3(1, in_channel)
-        # self.conv = conv3x3(in_channel * 2, embedding_channel) # sample
-        # self.bn = nn.BatchNorm2d(in_channel)
         self.act = nn.ReLU()
-        # self.resblocks = nn.ModuleList(
-        # 	[ResidualBlock(in_channel, in_channel) for _ in range(num_blocks)]
-        # )
-        # self.conv_out = conv3x3(in_channel, vq_in_channel)
         self.fc = nn.Linear(128, embedding_channel)
-        # self.bn_o = nn.BatchNorm1d(embedding_channel, affine=False)
 
     def forward(self, s0, s1):
         x = self.fc_0(s0) + self.fc_1(s1) 
-        # x = self.bn(x) TODO: delete this
-        # x += s0
         x = self.act(x)
-        # for block in self.resblocks:
-        # 	x = block(x)
-        # x = self.conv_out(x)
-
-        # flat_x = x.view(-1, self._input_size)
         flat_x = self.fc(x)
-        # print(flat_x.shape)
-        # flat_x = self.bn_o(flat_x)
         z, loss, perplexity, encoding_indices = self.quantizer(flat_x)
-        # z = z.unsqueeze(-1).unsqueeze(-1).repeat(1, 1, *s0.shape[-2:])
-        # print('perp: %.4f; LAG loss: %.4f;' % (perplexity, loss))
         return z, loss, perplexity, encoding_indices
 
 
@@ -552,11 +531,9 @@ class VectorQuantizer1D(nn.Module):
 
         encoding_indices = torch.argmin(distances, dim=1).unsqueeze(1)
         encodings = torch.zeros(encoding_indices.shape[0], self._num_embeddings).to(device)
-        # encodings.scatter_(1, encoding_indices, 1)
         encodings = torch.scatter(encodings, 1, encoding_indices, 1)
 
         quantized = torch.matmul(encodings, self.embedding.weight)
-        # print(self.embedding.weight)
  
         e_latent_loss = ((quantized.detach() - flat_input) ** 2).mean(dim=1)
         q_latent_loss = ((quantized - flat_input.detach()) ** 2).mean(dim=1)
@@ -582,17 +559,6 @@ class classifier_net(torch.nn.Module):
 
 
 class MMDLoss(nn.Module):
-    '''
-    计算源域数据和目标域数据的MMD距离
-    Params:
-    source: 源域数据（n * len(x))
-    target: 目标域数据（m * len(y))
-    kernel_mul:
-    kernel_num: 取不同高斯核的数量
-    fix_sigma: 不同高斯核的sigma值
-    Return:
-    loss: MMD loss
-    '''
     def __init__(self, kernel_type='rbf', kernel_mul=2.0, kernel_num=5, fix_sigma=None, **kwargs):
         super(MMDLoss, self).__init__()
         self.kernel_num = kernel_num
@@ -601,9 +567,6 @@ class MMDLoss(nn.Module):
         self.kernel_type = kernel_type
 
     def guassian_kernel(self, source, target, kernel_mul, kernel_num, fix_sigma):
-        # print(source.shape)
-        # print(target.shape)
-        # exit()
         n_samples = int(source.size()[0]) + int(target.size()[0])
         total = torch.cat([source, target], dim=0)
         total0 = total.unsqueeze(0).expand(

@@ -220,39 +220,7 @@ def load_episodes(directory, limit=None, reverse=True):
         print(f'Could not load episode: {e}')
         continue
       episodes[str(filename)] = episode
-      total += len(episode['reward']) - 1
-      if limit and total >= limit:
-        break
-  else:
-    for filename in sorted(directory.glob('*.npz')):
-      try:
-        with filename.open('rb') as f:
-          episode = np.load(f)
-          episode = {k: episode[k] for k in episode.keys()}
-      except Exception as e:
-        print(f'Could not load episode: {e}')
-        continue
-      episodes[str(filename)] = episode
-      total += len(episode['reward']) - 1
-      if limit and total >= limit:
-        break
-  return episodes
-
-
-def load_episodes_source(directory, limit=None, reverse=True):
-  directory = pathlib.Path(directory).expanduser()
-  episodes = {}
-  total = 0
-  if reverse:
-    for filename in reversed(sorted(directory.glob('*.npz'))):
-      try:
-        with filename.open('rb') as f:
-          episode = np.load(f)
-          episode = {k: episode[k] for k in episode.keys()}
-      except Exception as e:
-        print(f'Could not load episode: {e}')
-        continue
-      episodes[str(filename)] = episode
+      # total += len(episode['reward']) - 1
       total += episode['image'].shape[0] - 1
       if limit and total >= limit:
         break
@@ -266,7 +234,7 @@ def load_episodes_source(directory, limit=None, reverse=True):
         print(f'Could not load episode: {e}')
         continue
       episodes[str(filename)] = episode
-      total += episode['image'].shape[0] - 1
+      total += len(episode['reward']) - 1
       if limit and total >= limit:
         break
   return episodes

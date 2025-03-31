@@ -7,6 +7,8 @@ import sys
 import warnings
 import random
 import torch.nn.functional as F
+from datetime import datetime
+from agents.navigation.carla_env_dream import CarlaEnv
 
 os.environ['MUJOCO_GL'] = 'egl' 
 
@@ -58,11 +60,6 @@ class Dreamer(nn.Module):
         random=lambda: expl.Random(config),
         plan2explore=lambda: expl.Plan2Explore(config, self._wm, reward),
     )[config.expl_behavior]()
-    self.roll_step = 0
-    self.feat_future = None
-    self.train_lam_step = 40000
-    self.train_wm_step = 80000
-    self.train_only_policy_step = 100000
 
   def __call__(self, obs, reset, state=None, reward=None, training=True):
     step = self._step
@@ -116,13 +113,11 @@ class Dreamer(nn.Module):
                     + torch.sum(self._wm.latent_action_net.quantizer.embedding.weight ** 2, dim=1)
                     - 2 * torch.matmul(latent_action_cur, self._wm.latent_action_net.quantizer.embedding.weight.t()))
     encoding_indices_mid = torch.argmin(distances, dim=1)
-    print('env_action', encoding_indices_mid)
     encoding_indices = encoding_indices_mid.unsqueeze(1)
     encodings = torch.zeros(encoding_indices.shape[0], self._config.num_latent_action).to(self._config.device)
     encodings = torch.scatter(encodings, 1, encoding_indices, 1)
     quantized = torch.matmul(encodings, self._wm.latent_action_net.quantizer.embedding.weight)
     quantized = latent_action_cur + (quantized - latent_action_cur).detach()
-
     feat = torch.concat([feat, quantized], -1)
 
     if not training:
@@ -157,22 +152,19 @@ class Dreamer(nn.Module):
       return torch.clip(torchd.normal.Normal(action, amount).sample(), -1, 1)
     raise NotImplementedError(self._config.action_noise)
 
-  def _train(self, target_dataset, target_dataset_large, source_dataset, verify_dataset, step):
+  def _train(self, target_dataset, target_dataset_large, source_dataset, step):
     metrics = {}
-    if step == (self.train_lam_step + 1):
+    if step == (self._config.step_train_ban + 1):
       self._wm.encoder.load_state_dict(self._wm.encoder_lam.state_dict())
       self._wm.heads['image_latent'].load_state_dict(self._wm.heads['image'].state_dict())
-    if (not self._wm.train_lam_stop) and (step <= self.train_lam_step):
-      post, context, mets = self._wm._train_lam(target_dataset, source_dataset, verify_dataset, step)
+    if step <= self._config.step_train_ban:
+      post, context, mets = self._wm._train_lam(target_dataset, source_dataset)
       metrics.update(mets)
-    elif (not self._wm.train_stop) and (step > self.train_lam_step) and (step <= self.train_wm_step):
-      post, context, mets = self._wm._train(target_dataset, target_dataset_large, source_dataset, verify_dataset, step)
+    elif step > self._config.step_train_ban and step <= self._config.step_train_wm:
+      post, context, mets = self._wm._train(target_dataset, target_dataset_large, source_dataset, step)
       metrics.update(mets)
     else:
-      if step <= self.train_only_policy_step:
-        post, context, mets = self._wm._train(target_dataset, target_dataset_large, source_dataset, verify_dataset, step)
-      else:
-        post, context, mets = self._wm._train_stop(target_dataset, step)
+      post, context, mets = self._wm._train_stop(target_dataset, step)
       metrics.update(mets)
       start = post
       reward = lambda f, s, a: self._wm.heads['reward'](
@@ -183,17 +175,17 @@ class Dreamer(nn.Module):
         self._metrics[name] = [value]
       else:
         self._metrics[name].append(value)
-    if step % 1000 == 0:  #### 1000
+    if step % self._config.log_every == 0:  #### 1000
         for name, values in self._metrics.items():
           self._logger.scalar(name, float(np.mean(values)))
           self._metrics[name] = []
-        if step <= self.train_lam_step:
+        if step <= self._config.step_train_ban:
           openl = self._wm.video_pred_lam(target_dataset)
           self._logger.video('train_openl_lam', to_np(openl))
         else:
           openl = self._wm.video_pred(target_dataset)
           self._logger.video('train_openl', to_np(openl))
-          if step <= self.train_wm_step:
+          if step <= self._config.step_train_wm:
             openl_target = self._wm.video_pred_latent(target_dataset_large)
             self._logger.video('train_openl_latent_target', to_np(openl_target))
             openl_source = self._wm.video_pred_latent(source_dataset, source=True)
@@ -204,23 +196,21 @@ def count_steps(folder):
   return sum(int(str(n).split('-')[-1][:-4]) - 1 for n in folder.glob('*.npz'))
 
 
-def make_dataset(episodes, config):
+def make_dataset(episodes, config, index=None):
+  if index == 'source':
+    length = config.batch_length_source
+  elif index == 'target':
+    length = config.batch_length
+  elif index == 'target_large':
+    length = config.batch_length_large
+  else:
+    length = config.batch_length
+
   generator = tools.sample_episodes(
-      episodes, config.batch_length, config.oversample_ends)
+      episodes, length, config.oversample_ends)
   dataset = tools.from_generator(generator, config.batch_size)
   return dataset
 
-def make_dataset_large(episodes, config):
-  generator = tools.sample_episodes(
-      episodes, config.batch_length_large, config.oversample_ends)
-  dataset = tools.from_generator(generator, config.batch_size)
-  return dataset
-
-def make_dataset_source(episodes, config):
-  generator = tools.sample_episodes(
-      episodes, config.batch_length_source, config.oversample_ends)
-  dataset = tools.from_generator(generator, config.batch_size)
-  return dataset
 
 def make_env(config, logger, mode, train_eps, eval_eps):
   suite, task = config.task.split('_', 1)
@@ -251,13 +241,34 @@ def make_env(config, logger, mode, train_eps, eval_eps):
           config.camera,
       )
       env = wrappers.NormalizeActions(env)
+  elif suite == 'carla':
+    env = CarlaEnv(
+            render_display=False,  # for local debugging only
+            display_text=False,  # for local debugging only
+            changing_weather_speed=0.1,  # [0, +inf)
+            rl_image_size=config.image_size,
+            max_episode_steps=1000,
+            frame_skip=config.action_repeat,
+            is_other_cars=True,
+            port=2000
+        )
+  elif suite == 'minedojo':
+    import envs.minedojo as minedojo
+    log_dir = os.path.join(config.logdir, config.name + "_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+    kwargs=dict(
+      log_dir=log_dir,
+    )
+    env = minedojo.make_env(task, **kwargs)
+    env = wrappers.OneHotAction(env)
   else:
     raise NotImplementedError(suite)
   env = wrappers.TimeLimit(env, config.time_limit)
   env = wrappers.SelectAction(env, key='action')
-  if (mode == 'train') or (mode == 'eval'):
-    callbacks = [functools.partial(
-        process_episode, config, logger, mode, train_eps, eval_eps)]
+  callbacks = [functools.partial(
+      process_episode, config, logger, mode, train_eps, eval_eps)]
+  if suite == 'carla':
+    env = wrappers.CollectDataset_Carla(env, callbacks, logger=logger, mode=mode, eval_num=config.eval_num)
+  else:
     env = wrappers.CollectDataset(env, callbacks, logger=logger, mode=mode, eval_num=config.eval_num)
   env = wrappers.RewardObs(env)
   return env
@@ -304,47 +315,43 @@ def main(config):
   logdir.mkdir(parents=True, exist_ok=True)
   config.traindir.mkdir(parents=True, exist_ok=True)
   config.evaldir.mkdir(parents=True, exist_ok=True)
-  step = count_steps(config.traindir)
   step = 0
   logger = tools.Logger(logdir, step)
-  # random.seed()
 
   print('Create envs.')
-  if config.offline_traindir:
-    directory = config.offline_traindir.format(**vars(config))
-  else:
-    directory = config.traindir
+  directory = config.traindir
   train_eps = tools.load_episodes(directory, limit=config.dataset_size)
-  if config.offline_evaldir:
-    directory = config.offline_evaldir.format(**vars(config))
-  else:
-    directory = config.evaldir
+  directory = config.evaldir
   eval_eps = tools.load_episodes(directory, limit=1)
   make = lambda mode: make_env(config, logger, mode, train_eps, eval_eps)
-  train_envs = [make('train') for _ in range(config.envs)]
+  suite, task = config.task.split('_', 1)
   eval_envs = [make('eval') for _ in range(config.envs)]
-  acts = train_envs[0].action_space
-  config.num_actions = acts.n if hasattr(acts, 'n') else acts.shape[0]
+  acts = eval_envs[0].action_space
+  if suite == 'carla':
+    config.num_actions = acts.shape[0]
+  else:
+    config.num_actions = acts.n if hasattr(acts, 'n') else acts.shape[0]
 
   print('Simulate agent.')
-  train_dataset = make_dataset(train_eps, config)
   eval_dataset = make_dataset(eval_eps, config)
 
-  target_root = pathlib.Path('/target_dataset_root').expanduser()
+  #####  load target offline dataset
+  target_root = pathlib.Path(config.target_dataset_logdir).expanduser()
   target_eps = tools.load_episodes(target_root, limit=config.dataset_size)
-  target_dataset = make_dataset(target_eps, config) 
-  target_dataset_large = make_dataset_large(target_eps, config)
+  target_dataset = make_dataset(target_eps, config, index='target') 
+  target_dataset_large = make_dataset(target_eps, config, index='target_large')
 
-  source_root = pathlib.Path('/source_videos_root').expanduser()
-  source_eps = tools.load_episodes_source(source_root, limit=config.dataset_size)
-  source_dataset = make_dataset_source(source_eps, config)
+  ##### load source video dataset
+  source_root = pathlib.Path(config.source_video_logdir).expanduser()
+  source_eps = tools.load_episodes(source_root, limit=config.dataset_size)
+  source_dataset = make_dataset(source_eps, config, index='source')
 
   agent = Dreamer(config, logger, target_dataset, source_dataset).to(config.device)
   agent.requires_grad_(requires_grad=False)
 
   i = 0 
-  while i < 1000000:
-    if i >= 80000 and i % 3000 == 0:
+  while i < config.step_train_all:
+    if i >= config.step_train_wm and i % config.eval_every == 0:
       logger.write()
       print('Start evaluation.')
       eval_policy = functools.partial(agent, training=False)
@@ -352,18 +359,14 @@ def main(config):
       video_pred = agent._wm.video_pred(next(eval_dataset))
       logger.video('eval_openl', to_np(video_pred))
     print(i)
-    if i == 80001:
-      del source_dataset
-      del verify_dataset
-    if i == 100001:
-      del target_dataset_large
-    if i > 100000:
-      agent._train(next(target_dataset), None, None, None, i)
-    elif i > 80000 and i <= 100000:
-      agent._train(next(target_dataset), next(target_dataset_large), None, None, i)
+    if i > config.step_train_wm:
+      agent._train(next(target_dataset), None, None, i)
     else:
-      agent._train(next(target_dataset), next(target_dataset_large), next(source_dataset), None, i)
-    if (i % 10000 == 0 and i != 0) or (i == 40000) or (i == 80000) or (agent._wm.train_lam_stop and i < 40000) or (agent._wm.train_stop and i < 80000):
+      if suite == 'metaworld':
+        agent._train(next(target_dataset), next(target_dataset_large), next(source_dataset), i)
+      else:
+        agent._train(next(target_dataset), next(target_dataset), next(source_dataset), i)
+    if i % 20000 == 0 and i != 0:
       torch.save(agent.state_dict(), logdir / f'latest_model_{i}.pt')
     logger.step += 1
     i += 1

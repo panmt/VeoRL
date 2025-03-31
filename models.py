@@ -25,9 +25,13 @@ class WorldModel(nn.Module):
     else:
       raise NotImplemented(f"{config.size} is not applicable now")
     
-    self.latent_action_net = networks.LatentActionGen(num_embeddings=config.num_latent_action, in_channel=1024, embedding_channel=config.latent_action_dim)
+    self.embed_size = embed_size
+    self.latent_action_net = networks.LatentActionGen(num_embeddings=config.num_latent_action, in_channel=embed_size, embedding_channel=config.latent_action_dim)
     self.mmd = networks.MMDLoss('linear')
-    self.imitation_net = networks.classifier_net(config.dyn_stoch + config.dyn_deter, (config.dyn_stoch + config.dyn_deter)//2, config.latent_action_dim)
+    if config.dyn_discrete:
+      self.imitation_net = networks.classifier_net(config.dyn_stoch*config.dyn_stoch+config.dyn_deter, (config.dyn_stoch + config.dyn_deter)//2, config.latent_action_dim)
+    else:
+      self.imitation_net = networks.classifier_net(config.dyn_stoch+config.dyn_deter, (config.dyn_stoch + config.dyn_deter)//2, config.latent_action_dim)
 
     self.dynamics_lam = networks.RSSM(
         config.dyn_stoch, config.dyn_deter, config.dyn_hidden,
@@ -77,15 +81,7 @@ class WorldModel(nn.Module):
         reward=config.reward_scale, discount=config.discount_scale)
     
     self.mse_func = torch.nn.MSELoss()
-    self.train_source_imitation_mmd_step = 100000
-    self.best_loss_lam = np.inf
-    self.best_loss = np.inf
-    self.epochs_without_improvement_lam = 0
-    self.epochs_without_improvement = 0
-    self.train_lam_stop = False
-    self.train_stop = False
-    self.best_model_weights = None
-    self.best_model_weights_lam = None
+    self.train_source_imitation_mmd_step = config.step_train_wm
 
   def _train_stop(self, target_dataset, step):
     target_dataset = self.preprocess(target_dataset)
@@ -98,7 +94,7 @@ class WorldModel(nn.Module):
     post = {k: v.detach() for k, v in post.items()}
     return post, None, {}
 
-  def _train(self, target_dataset, target_dataset_large, source_dataset, verify_dataset, step):
+  def _train(self, target_dataset, target_dataset_large, source_dataset, step):
     target_dataset = self.preprocess(target_dataset)
     target_dataset_large = self.preprocess(target_dataset_large)
     # source_dataset = self.preprocess(source_dataset, source=True)
@@ -111,8 +107,7 @@ class WorldModel(nn.Module):
 
         ########################  train latent wm with taget data
         embed_target = self.encoder_lam(target_dataset_large)
-        latent_action_target, _, _, encoding_indices_target = self.latent_action_net(embed_target[:, 1:, :].reshape(-1, 1024), embed_target[:, :-1, :].reshape(-1, 1024))
-        print('wm_action_target', encoding_indices_target[:self._config.batch_length_large-1])
+        latent_action_target, _, _, encoding_indices_target = self.latent_action_net(embed_target[:, 1:, :].reshape(-1, self.embed_size), embed_target[:, :-1, :].reshape(-1, self.embed_size))
         encoding_indices_target = encoding_indices_target.reshape(self._config.batch_size, self._config.batch_length_large-1).detach()
         latent_action_target = latent_action_target.reshape(self._config.batch_size, self._config.batch_length_large-1, -1).detach()
 
@@ -122,9 +117,7 @@ class WorldModel(nn.Module):
         image_jump_target = torch.cat([action_jump_target[:, 1:], torch.ones(action_jump_target.shape[0], 1).to(self._config.device)], dim=-1) 
 
         action_mul_target = torch.sort(action_jump_target, dim=1, descending=True)[0][:, :self._config.batch_length]
-        # print('action_mul_target:', action_mul_target[9])
         image_mul_target = torch.sort(image_jump_target, dim=1, descending=True)[0][:, :self._config.batch_length]
-        # print('image_mul_target:', image_mul_target[9])
 
         image_latent_target = target_dataset_large['image'][:, 1:] * image_jump_target.unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
         action_latent_target = latent_action_target * action_jump_target.unsqueeze(-1)
@@ -150,8 +143,7 @@ class WorldModel(nn.Module):
           ########################  train latent wm with source data
           source_dataset = self.preprocess(source_dataset, source=True)
           embed_source = self.encoder_lam(source_dataset)
-          latent_action_source, _, _, encoding_indices_source = self.latent_action_net(embed_source[:, 1:, :].reshape(-1, 1024), embed_source[:, :-1, :].reshape(-1, 1024))
-          print('wm_action_source', encoding_indices_source[:self._config.batch_length_source-1])
+          latent_action_source, _, _, encoding_indices_source = self.latent_action_net(embed_source[:, 1:, :].reshape(-1, self.embed_size), embed_source[:, :-1, :].reshape(-1, self.embed_size))
           encoding_indices_source = encoding_indices_source.reshape(self._config.batch_size, self._config.batch_length_source-1).detach()
           latent_action_source = latent_action_source.reshape(self._config.batch_size, self._config.batch_length_source-1, -1).detach()
 
@@ -180,7 +172,7 @@ class WorldModel(nn.Module):
               post_latent_source, prior_latent_source, self._config.kl_forward, kl_balance, kl_free, kl_scale)
           
           ########################  train mmd
-          mmd_loss = self.mmd(embed_source_latent.reshape(-1, 1024), embed_target_latent.reshape(-1, 1024))
+          mmd_loss = self.mmd(embed_source_latent.reshape(-1, self.embed_size), embed_target_latent.reshape(-1, self.embed_size))
           
           ########################  train imitation net
           feat_imi_target = self.dynamics_lam.get_feat(post_latent_target)[:, :-1].detach()
@@ -248,7 +240,7 @@ class WorldModel(nn.Module):
     post = {k: v.detach() for k, v in post.items()}
     return post, context, metrics  
 
-  def _train_lam(self, target_dataset, source_dataset, verify_dataset, step):
+  def _train_lam(self, target_dataset, source_dataset):
     target_dataset = self.preprocess(target_dataset)
     source_dataset = self.preprocess(source_dataset, source=True)
 
@@ -257,12 +249,11 @@ class WorldModel(nn.Module):
         embed_target = self.encoder_lam(target_dataset)
         embed_source = self.encoder_lam(source_dataset)
 
-        latent_action, vq_loss, _, encoding_indices = self.latent_action_net(embed_target[:, 1:, :].reshape(-1, 1024), embed_target[:, :-1, :].reshape(-1, 1024))
+        latent_action, vq_loss, _, encoding_indices = self.latent_action_net(embed_target[:, 1:, :].reshape(-1, self.embed_size), embed_target[:, :-1, :].reshape(-1, self.embed_size))
         vq_loss = torch.mean(vq_loss)
-        print('wm_action_lam', encoding_indices[:self._config.batch_length-1])
         latent_action = latent_action.reshape(self._config.batch_size, self._config.batch_length-1, -1)
 
-        mmd_loss = self.mmd(embed_source.reshape(-1, 1024), embed_target.reshape(-1, 1024))
+        mmd_loss = self.mmd(embed_source.reshape(-1, self.embed_size), embed_target.reshape(-1, self.embed_size))
 
         post, prior = self.dynamics_lam.observe(embed_target[:, 1:], latent_action)
         kl_balance = tools.schedule(self._config.kl_balance, self._step)
@@ -364,7 +355,7 @@ class WorldModel(nn.Module):
 
     truth = data['image'][:6, 1:] + 0.5
     embed = self.encoder_lam(data)
-    latent_action, _, _, latent_indices = self.latent_action_net(embed[:, 1:, :].reshape(-1, 1024), embed[:, :-1, :].reshape(-1, 1024))
+    latent_action, _, _, latent_indices = self.latent_action_net(embed[:, 1:, :].reshape(-1, self.embed_size), embed[:, :-1, :].reshape(-1, self.embed_size))
     if source == True:
       length = self._config.batch_length_source
     else:
@@ -390,7 +381,7 @@ class WorldModel(nn.Module):
       length = self._config.batch_length_large
 
     embed_source = self.encoder_lam(data)
-    latent_action_source, _, _, encoding_indices_source = self.latent_action_net(embed_source[:, 1:, :].reshape(-1, 1024), embed_source[:, :-1, :].reshape(-1, 1024))
+    latent_action_source, _, _, encoding_indices_source = self.latent_action_net(embed_source[:, 1:, :].reshape(-1, self.embed_size), embed_source[:, :-1, :].reshape(-1, self.embed_size))
     encoding_indices_source = encoding_indices_source.reshape(self._config.batch_size, length-1).detach()
     latent_action_source = latent_action_source.reshape(self._config.batch_size, length-1, -1).detach()
 
@@ -458,9 +449,6 @@ class ImagBehavior(nn.Module):
     self._value_opt = tools.Optimizer(
         'value', self.value.parameters(), config.value_lr, config.opt_eps, config.value_grad_clip,
         **kw)
-    self.roll_step = 0
-    self.feat_future = None
-    self.last_indices = None
     self.zero = torch.zeros(1, config.batch_size*config.batch_length).to(self._config.device)
 
   def _train(
@@ -517,9 +505,6 @@ class ImagBehavior(nn.Module):
       raise NotImplemented("repeats is not implemented in this version")
     flatten = lambda x: x.reshape([-1] + list(x.shape[2:]))
     start = {k: flatten(v) for k, v in start.items()}
-    self.roll_step = 0
-    self.feat_future = None
-    self.last_indices = None
     def step(prev, _):
       state, _, _, _, _ = prev
       feat_ori = dynamics.get_feat(state)
@@ -529,7 +514,6 @@ class ImagBehavior(nn.Module):
                       + torch.sum(self._world_model.latent_action_net.quantizer.embedding.weight ** 2, dim=1)
                       - 2 * torch.matmul(latent_action_cur, self._world_model.latent_action_net.quantizer.embedding.weight.t()))
       encoding_indices_mid = torch.argmin(distances, dim=1)
-      print('policy_action', encoding_indices_mid[:5])
       encoding_indices = encoding_indices_mid.unsqueeze(1)
       encodings = torch.zeros(encoding_indices.shape[0], self._config.num_latent_action).to(self._config.device)
       encodings = torch.scatter(encodings, 1, encoding_indices, 1)
