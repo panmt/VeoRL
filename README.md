@@ -1,11 +1,11 @@
 ## Setting up
 
-### 1. Meta-World
+#### Meta-World
 ```
 conda env create -f set_up/metaworld.yaml
 ```
 
-### 2. CARLA
+#### CARLA
 
 1. Create an environment
 ```
@@ -26,7 +26,7 @@ export PYTHONPATH=$PYTHONPATH:/home/CARLA_0.9.10/PythonAPI/carla/dist/carla-0.9.
 ```
 4. merge the directories, i.e., put 'carla_env_dream.py' into 'CARLA_0.9.10/PythonAPI/carla/agents/navigation/'.
 
-### 3. MineDojo
+#### MineDojo
 
 1. Create an environment
 ```
@@ -45,13 +45,13 @@ conda activate minedojo
 
 ## Training
 
-### Meta-World:
+#### Meta-World:
 
 ```
 python dreamer.py --logdir path/to/log --config defaults metaworld --task metaworld_handle_press  --target_dataset_logdir path/to/offline_dataset --source_video_logdir path/to/video 
 ```
 
-### CARLA
+#### CARLA
 
 Terminal 1:
 ```
@@ -66,7 +66,7 @@ python dreamer.py --logdir path/to/log --config defaults carla  --target_dataset
 
 When running other environments where the CARLA simulator is not deployed, it may be necessary to comment out the line 'from agents.navigation.carla_env_dreamer import CarlaEnv' in the dreamer.py file.
 
-### MineDojo
+#### MineDojo
 
 ```
 python dreamer.py --logdir path/to/log --config defaults minedojo --task minedojo_dv2_harvest_log_in_plains  --target_dataset_logdir path/to/offline_dataset --source_video_logdir path/to/video 
