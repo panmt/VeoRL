@@ -1,3 +1,31 @@
+<h1 align="center">
+ [ICML 2025] Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach </h1>
+<p align="center">
+    Minting Pan
+    ·
+    Yitao Zheng
+    ·
+    Jiajian Li
+    ·
+    Yunbo Wang
+    ·
+    Xiaokang Yang
+  </p>
+
+<h3 align="center"> <a href="https://arxiv.org/abs/2505.06482" target="_blank"> Paper </a> &nbsp;&nbsp; | &nbsp;&nbsp; <a href="https://panmt.github.io/VeoRL.github.io/" target="_blank"> Website </a> &nbsp;&nbsp; </h3>
+  <div align="center"></div>
+
+<p align="center">
+<img src="assets/intro.png" alt="Teaser image" />
+</p>
+
+
+<p style="text-align:justify">
+  Offline reinforcement learning (RL) enables policy optimization using static datasets, avoiding the risks and costs of extensive real-world exploration. However, it struggles with suboptimal offline behaviors and inaccurate value estimation due to the lack of environmental interaction. We present Video-Enhanced Offline RL (VeoRL), a model-based method that constructs an interactive world model from diverse, unlabeled video data readily available online. Leveraging model-based behavior guidance, our approach transfers commonsense knowledge of control policy and physical dynamics from natural videos to the RL agent within the target domain. VeoRL achieves substantial performance gains (over 100% in some cases) across visual control tasks in robotic manipulation, autonomous driving, and open-world video games.
+</p>
+
+
+
 ## Setting up
 
 #### Meta-World
@@ -71,3 +99,39 @@ When running other environments where the CARLA simulator is not deployed, it ma
 ```
 python dreamer.py --logdir path/to/log --config defaults minedojo --task minedojo_dv2_harvest_log_in_plains  --target_dataset_logdir path/to/offline_dataset --source_video_logdir path/to/video 
 ```
+
+
+## Pretrained Weights
+
+We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below and rename the downloaded file to `latest.pt`:
+
+<div align="center">
+
+| Task Name                  | Weight File                                                                                   |
+|----------------------------|-----------------------------------------------------------------------------------------------|
+| MetaWorld_Drawer_Open      | [latest_drawer_open.pt]()                                                                |
+| MetaWorld_Handle_Press      | [latest_handle_press.pt]()                                                                |
+| MetaWorld_Handle_Pull      | [latest_handle_pull.pt]()                                                                |
+| MetaWorld_Plate_Slide      | [latest_plate_slide.pt]()                                                                |
+| MetaWorld_Coffee_Push      | [latest_coffee_push.pt]()                                                                |
+| MetaWorld_Butten_Press      | [latest_butten_press.pt]()                                                                |
+| CARLA      | [latest_carla.pt]()                                                                |
+| MineDojo_harvest_log_in_plains      | [latest_log.pt]()                                                                |
+| MineDojo_harvest_water_with_bucket  | [latest_water.pt]()                                                              |
+| MineDojo_harvest_sand               | [latest_sand.pt]()                                                               |
+</div>
+
+## Citation
+If you find this repo useful, please cite our paper:
+```bib
+    @inproceedings{pan2025veorl,
+        title={Video-Enhanced Offline Reinforcement Learning: A Model-Based Approach},
+        author={Minting Pan and Yitao Zheng and Jiajian Li and Yunbo Wang and Xiaokang Yang},
+        booktitle={ICML},
+        year={2025}
+    }
+```
+
+
+## Credits
+The codes refer to the implemention of [dreamer-torch](https://github.com/jsikyoon/dreamer-torch). Thanks for the authors！
