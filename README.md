@@ -16,7 +16,7 @@
   <div align="center"></div>
 
 <p align="center">
-<img src="assets/intro.png" alt="Teaser image" />
+<img src="images/intro.png" alt="Teaser image" />
 </p>
 
 
