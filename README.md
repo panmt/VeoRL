@@ -103,7 +103,7 @@ python dreamer.py --logdir path/to/log --config defaults minedojo --task minedoj
 
 ## Pretrained Weights
 
-We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below and rename the downloaded file to `latest.pt`:
+We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below:
 
 <div align="center">
 
