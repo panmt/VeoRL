@@ -121,6 +121,10 @@ We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper.
 | MineDojo_harvest_sand               | [latest_sand.pt]()                                                               |
 </div>
 
+## Video Data
+
+We will release them soon.
+
 ## Citation
 If you find this repo useful, please cite our paper:
 ```bib
