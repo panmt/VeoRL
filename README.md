@@ -103,7 +103,7 @@ python dreamer.py --logdir path/to/log --config defaults minedojo --task minedoj
 
 ## Pretrained Weights
 
-We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below:
+<!-- We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below: 
 
 <div align="center">
 
@@ -119,7 +119,9 @@ We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper.
 | MineDojo_harvest_log_in_plains      | [latest_log.pt]()                                                                |
 | MineDojo_harvest_water_with_bucket  | [latest_water.pt]()                                                              |
 | MineDojo_harvest_sand               | [latest_sand.pt]()                                                               |
-</div>
+</div> -->
+
+We will release them soon.
 
 ## Video Data
 
