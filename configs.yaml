@@ -198,7 +198,7 @@ carla:
 
   # Environment
   time_limit: 1000
-  action_repeat: 4
+  action_repeat: 1
   train_every: 5
   train_steps: 1
 
