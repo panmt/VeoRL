@@ -1,4 +1,4 @@
-dv2_testdemo_01:
+testdemo_01:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 5
@@ -41,7 +41,7 @@ dv2_testdemo_01:
     reset_flag: True
     step_flag: True
 
-dv2_harvest_log_in_plains:
+harvest_log_in_plains:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 5
@@ -73,7 +73,7 @@ dv2_harvest_log_in_plains:
   terminal_specs:
     max_steps: 1000 
 
-dv2_mine_cobblestone:
+mine_cobblestone:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 5
@@ -106,7 +106,7 @@ dv2_mine_cobblestone:
   terminal_specs:
     max_steps: 1000
 
-dv2_mine_iron_ore:
+mine_iron_ore:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 5
@@ -139,7 +139,7 @@ dv2_mine_iron_ore:
   terminal_specs:
     max_steps: 2000
 
-dv2_harvest_water_bucket_in_plains:
+harvest_water_with_bucket:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 5
@@ -173,7 +173,7 @@ dv2_harvest_water_bucket_in_plains:
   terminal_specs:
     max_steps: 1000
 
-dv2_harvest_sand:
+harvest_sand:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 5
@@ -202,7 +202,7 @@ dv2_harvest_sand:
   terminal_specs:
     max_steps: 1000
     
-dv2_combat_spider:
+combat_spider:
   task_id: "combat"
   sim: minedojo
   fast_reset: 1
@@ -244,7 +244,7 @@ dv2_combat_spider:
   terminal_specs:
     max_steps: 500
 
-dv2_shear_sheep_in_plains:
+shear_sheep_in_plains:
   task_id: "harvest"
   sim: minedojo
   fast_reset: 1
