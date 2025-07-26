@@ -124,7 +124,7 @@ We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper.
 
 ## Video Data
 
-We will release them soon.
+We provide source and target datasets used in the paper. You can download in [this link](https://drive.google.com/drive/folders/1EZhvU4YrZqkI7I4ZCWtsMqqJK_fWglyW?usp=sharing).
 
 ## Citation
 If you find this repo useful, please cite our paper:
