@@ -119,7 +119,7 @@ We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper.
 | MineDojo_harvest_log_in_plains      | [log.pt]()                                                                |
 | MineDojo_harvest_water_with_bucket  | [water.pt]()                                                              |
 | MineDojo_harvest_sand               | [sand.pt]()                                                               |
-
+</div>
 
 
 ## Video Data
