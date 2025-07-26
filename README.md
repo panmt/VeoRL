@@ -103,25 +103,24 @@ python dreamer.py --logdir path/to/log --config defaults minedojo --task minedoj
 
 ## Pretrained Weights
 
-<!-- We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below: 
+We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper. You can download them using the links in the table below: 
 
 <div align="center">
 
 | Task Name                  | Weight File                                                                                   |
 |----------------------------|-----------------------------------------------------------------------------------------------|
-| MetaWorld_Drawer_Open      | [latest_drawer_open.pt]()                                                                |
-| MetaWorld_Handle_Press      | [latest_handle_press.pt]()                                                                |
-| MetaWorld_Handle_Pull      | [latest_handle_pull.pt]()                                                                |
-| MetaWorld_Plate_Slide      | [latest_plate_slide.pt]()                                                                |
-| MetaWorld_Coffee_Push      | [latest_coffee_push.pt]()                                                                |
-| MetaWorld_Butten_Press      | [latest_butten_press.pt]()                                                                |
-| CARLA      | [latest_carla.pt]()                                                                |
-| MineDojo_harvest_log_in_plains      | [latest_log.pt]()                                                                |
-| MineDojo_harvest_water_with_bucket  | [latest_water.pt]()                                                              |
-| MineDojo_harvest_sand               | [latest_sand.pt]()                                                               |
-</div> -->
+| MetaWorld_Drawer_Open      | [drawer_open.pt]()                                                                |
+| MetaWorld_Handle_Press      | [handle_press.pt]()                                                                |
+| MetaWorld_Handle_Pull      | [handle_pull.pt]()                                                                |
+| MetaWorld_Plate_Slide      | [plate_slide.pt]()                                                                |
+| MetaWorld_Coffee_Push      | [coffee_push.pt]()                                                                |
+| MetaWorld_Butten_Press      | [butten_press.pt]()                                                                |
+| CARLA      | [carla.pt]()                                                                |
+| MineDojo_harvest_log_in_plains      | [log.pt]()                                                                |
+| MineDojo_harvest_water_with_bucket  | [water.pt]()                                                              |
+| MineDojo_harvest_sand               | [sand.pt]()                                                               |
 
-We will release them soon.
+
 
 ## Video Data
 
