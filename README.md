@@ -109,16 +109,16 @@ We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper.
 
 | Task Name                  | Weight File                                                                                   |
 |----------------------------|-----------------------------------------------------------------------------------------------|
-| MetaWorld_Drawer_Open      | [drawer_open.pt]()                                                                |
-| MetaWorld_Handle_Press      | [handle_press.pt]()                                                                |
-| MetaWorld_Handle_Pull      | [handle_pull.pt]()                                                                |
-| MetaWorld_Plate_Slide      | [plate_slide.pt]()                                                                |
-| MetaWorld_Coffee_Push      | [coffee_push.pt]()                                                                |
-| MetaWorld_Butten_Press      | [butten_press.pt]()                                                                |
-| CARLA      | [carla.pt]()                                                                |
-| MineDojo_harvest_log_in_plains      | [log.pt]()                                                                |
-| MineDojo_harvest_water_with_bucket  | [water.pt]()                                                              |
-| MineDojo_harvest_sand               | [sand.pt]()                                                               |
+| MetaWorld_Drawer_Open      | [drawer_open.pt](https://drive.google.com/file/d/1DcZfuQNBCGpUPKZC6sd8VT96kgrq_P4Y/view?usp=sharing)                                                                |
+| MetaWorld_Handle_Press      | [handle_press.pt](https://drive.google.com/file/d/1Yl7tUn32qs_RUR9ugXBkEPp-z9AmopSk/view?usp=sharing)                                                                |
+| MetaWorld_Handle_Pull      | [handle_pull.pt](https://drive.google.com/file/d/18vJTcKV0ePMy81zqVRuC-QtZe0OAGsyd/view?usp=sharing)                                                                |
+| MetaWorld_Plate_Slide      | [plate_slide.pt](https://drive.google.com/file/d/1dPd-ySoqT443dlA46DRYDCuAWOvHZ294/view?usp=sharing)                                                                |
+| MetaWorld_Coffee_Push      | [coffee_push.pt](https://drive.google.com/file/d/1LYnkqwadMijS5juQiCjxfB4MQdSMxOOO/view?usp=sharing)                                                                |
+| MetaWorld_Butten_Press      | [butten_press.pt](https://drive.google.com/file/d/1MzbxSXkXzEjAKpu9rIiYvIgEpws8z4wW/view?usp=sharing)                                                                |
+| CARLA      | [carla.pt](https://drive.google.com/file/d/1K5iA-r7L-ogxXtSD96HFeZv9_PfL-n3P/view?usp=sharing)                                                                |
+| MineDojo_harvest_log_in_plains      | [log.pt](https://drive.google.com/file/d/1ti2tEmOButedzxzcoSuW3jQUh9TmBAqU/view?usp=sharing)                                                                |
+| MineDojo_harvest_water_with_bucket  | [water.pt](https://drive.google.com/file/d/18w_nt9uPb5YAyYFapxFL2miUBOUFZtZu/view?usp=sharing)                                                              |
+| MineDojo_harvest_sand               | [sand.pt](https://drive.google.com/file/d/1aDZiAlG-NXqjPBS-HoT8DHdyjofzVRfC/view?usp=sharing)                                                               |
 </div>
 
 
