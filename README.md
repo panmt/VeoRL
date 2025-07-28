@@ -116,7 +116,7 @@ We provide pretrained weights of **VeoRL** for the tasks mentioned in the paper.
 | MetaWorld_Coffee_Push      | [coffee_push.pt](https://drive.google.com/file/d/1LYnkqwadMijS5juQiCjxfB4MQdSMxOOO/view?usp=sharing)                                                                |
 | MetaWorld_Butten_Press      | [butten_press.pt](https://drive.google.com/file/d/1MzbxSXkXzEjAKpu9rIiYvIgEpws8z4wW/view?usp=sharing)                                                                |
 | CARLA      | [carla.pt](https://drive.google.com/file/d/1K5iA-r7L-ogxXtSD96HFeZv9_PfL-n3P/view?usp=sharing)                                                                |
-| MineDojo_harvest_log_in_plains      | [log.pt](https://drive.google.com/file/d/1ti2tEmOButedzxzcoSuW3jQUh9TmBAqU/view?usp=sharing)                                                                |
+| MineDojo_harvest_log_in_plains      | [log.pt](https://drive.google.com/file/d/1m73o8J_OqDFHqyZunuyLmhZt0yl3Vf4r/view?usp=sharing)                                                                |
 | MineDojo_harvest_water_with_bucket  | [water.pt](https://drive.google.com/file/d/18w_nt9uPb5YAyYFapxFL2miUBOUFZtZu/view?usp=sharing)                                                              |
 | MineDojo_harvest_sand               | [sand.pt](https://drive.google.com/file/d/1aDZiAlG-NXqjPBS-HoT8DHdyjofzVRfC/view?usp=sharing)                                                               |
 </div>
