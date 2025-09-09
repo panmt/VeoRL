@@ -5,6 +5,7 @@ defaults:
   evaldir: null
   target_dataset_logdir: '\path to offline dataset'
   source_video_logdir: '\path to video dataset'
+  eval_pretrained_model: '\path to model'
   seed: 0
   steps: 1e7
   eval_every: 1e4
@@ -261,7 +262,7 @@ minedojo:
   # Model
   grad_heads: ['image', 'reward']
   dyn_cell: 'gru_layer_norm'
-  pred_discount: False
+  pred_discount: True
   cnn_depth: 96
   dyn_deter: 4096
   dyn_hidden: 1024
