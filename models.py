@@ -29,7 +29,7 @@ class WorldModel(nn.Module):
     self.latent_action_net = networks.LatentActionGen(num_embeddings=config.num_latent_action, in_channel=embed_size, embedding_channel=config.latent_action_dim)
     self.mmd = networks.MMDLoss('linear')
     if config.dyn_discrete:
-      self.imitation_net = networks.classifier_net(config.dyn_stoch*config.dyn_stoch+config.dyn_deter, (config.dyn_stoch + config.dyn_deter)//2, config.latent_action_dim)
+      self.imitation_net = networks.classifier_net(config.dyn_stoch*config.dyn_discrete+config.dyn_deter, (config.dyn_stoch*config.dyn_discrete+config.dyn_deter)//2, config.latent_action_dim)
     else:
       self.imitation_net = networks.classifier_net(config.dyn_stoch+config.dyn_deter, (config.dyn_stoch + config.dyn_deter)//2, config.latent_action_dim)
 
